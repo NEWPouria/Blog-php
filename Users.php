@@ -56,7 +56,7 @@ class Users{
             //در تایع لاگین یوزرنیم کاربر در سشن ذخیره میشود
             if(password_verify($Entered_Password,$Hashed_PASSWORD_from_DataBase)){
                 $_SESSION["USER"]=$Entered_Email;
-                header("Location: Panel.php"); 
+                header("Location: ProfilePage.php"); 
                 
 
             }else{

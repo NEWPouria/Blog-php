@@ -11,12 +11,12 @@ if(isset($_SESSION["USER"])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/pico.blue.min.css">
+    <link rel="stylesheet" href="../css/pico.blue.min.css">
     <title>ورود</title>
 </head>
 
 <?php
-include(__DIR__."/Users.php");
+include(__DIR__."/../Users.php");
 
 if (!empty($_POST)) {
 
