@@ -1,0 +1,11 @@
+.sidebar {
+    width: 20%;
+}
+.content {
+    display: flex;
+    gap: 25px;
+}
+
+.main-content {
+    width: 100%;
+}
