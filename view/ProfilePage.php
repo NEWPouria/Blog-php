@@ -13,14 +13,15 @@ if (!isset($_SESSION["USER"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صفحه سه ستونی با تم دارک و روشن</title>
-    <link rel="stylesheet" href="./css/ProfilePage.css">
+    <link rel="stylesheet" href="/Blog/css/ProfilePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <!-- کد های php برای نمایش profile -->
 <?php
 
-require_once 'Users.php';
+// require_once 'Users.php';
+require_once 'C:/laragon/www/InClass/Blog/Users.php';
 $UserEmail = $_SESSION["USER"];
 
 // فراخوانی اطلاعات کاربر
@@ -105,11 +106,11 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                     <button class="round_button" onclick="toggleTheme()"><i id="ThemeIcon"
                             class="fa-regular fa-moon"></i></button>
                 </div>
-                <img src="./css/banner.jpg" alt="banner_pic">
+                <img src="/Blog/css/banner.jpg" alt="banner_pic">
 
                 <div class="UnderBanner">
                     <div class="profile_pic">
-                        <img src="./css/profile.png" alt="profile_pic">
+                        <img src="/Blog/css/profile.png" alt="profile_pic">
                     </div>
                     <div class="UnderBannerBTNs">
                         <button class="oval_button"> <i class="fa-solid fa-user-plus"></i> Follow </button>
@@ -136,8 +137,10 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
             <!-- نمایش پست ها -->
             <div class="post">
                 <?php
-                require_once 'Articles.php';
-                require_once 'Media.php';
+                // require_once 'Articles.php';
+                require_once 'C:/laragon/www/InClass/Blog/Articles.php';
+                // require_once 'Media.php';
+                require_once 'C:/laragon/www/InClass/Blog/Media.php';
                 $articles = Articles::ShowAllUserArticles($UserID);
                 $UserInfo = Users::FetchUserInfoBYID($UserID);
 
@@ -159,7 +162,7 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                                 // var_dump($MediaID[1]);
                                 $ArticleMedia_src = Media::MediaInfo(51);
                                 ?>
-                                <img src="<?= htmlspecialchars($ArticleMedia_src["MediaPath"]) ?>" width="200">
+                                <img src="/Blog/<?= htmlspecialchars($ArticleMedia_src["MediaPath"]) ?>" width="200">
                                 <hr>
                             </div>
                         <?php endforeach; ?>
