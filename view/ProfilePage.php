@@ -70,7 +70,7 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                     <button onclick="gocenter()" class="round_button"><i id="ExpandIcon"
                             class="fa-solid fa-expand fa-lg"></i></button>
                 </div>
-                <form action="PostProcess.php" method="post" enctype="multipart/form-data">
+                <form action="/../Blog/Controller/PostProcess.php" method="post" enctype="multipart/form-data">
                     <textarea id="PostText" name="Post_Text" class="PostText" placeholder="Whats Happening?" rows="7"
                         style="resize: none;width: 100%;height: 140px;background-color: inherit; color: inherit; border: 1px solid #ccc; padding: 10px;"></textarea>
                     <div class="UnderPostBTNs">

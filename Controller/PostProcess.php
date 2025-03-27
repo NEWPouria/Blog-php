@@ -18,9 +18,9 @@ if (!isset($_SESSION["USER"])) {
 <body>
     holalaaa
     <?php
-    require_once 'Users.php';
-    include_once 'Articles.php';
-    include_once 'Media.php';
+    require_once (__DIR__ . "/../../Blog/Model/Users.php");
+    require_once (__DIR__ . '/../../Blog/Model/Articles.php');
+    include_once (__DIR__ . "/../../Blog/Model/Media.php");
     $PostMedia = new Media;
     $User = new Users;
     $UserID = $User->FindUserID($_SESSION["USER"]);
@@ -50,7 +50,7 @@ if (!isset($_SESSION["USER"])) {
         // print_r($_FILES);
         // echo "</pre>";
 
-        header('Location: ProfilePage.php');
+        header('Location: /../../Blog/View/ProfilePage.php');
         exit();
     }
     ?>
