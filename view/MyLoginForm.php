@@ -16,7 +16,7 @@ if(isset($_SESSION["USER"])){
 </head>
 
 <?php
-include(__DIR__."/../Users.php");
+include(__DIR__."/../../Blog/Model/Users.php");
 
 if (!empty($_POST)) {
 

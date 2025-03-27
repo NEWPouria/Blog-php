@@ -15,7 +15,7 @@ if(isset($_SESSION["USER"])){
 </head>
 
 <?php
-include(__DIR__."/..//Users.php");
+include(__DIR__."/../../Blog/Model/Users.php");
 
 if (isset($_SESSION["user"])) {
     header("Location: MyLoginForm.php");
