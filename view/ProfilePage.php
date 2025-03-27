@@ -22,7 +22,7 @@ if (!isset($_SESSION["USER"])) {
 
 // require_once 'Users.php';
 // require_once 'C:/laragon/www/InClass/Blog/Users.php';
-require_once __DIR__ . '/../../Blog/Users.php';
+require_once __DIR__ . '/../../Blog/Model/Users.php';
 $UserEmail = $_SESSION["USER"];
 
 // فراخوانی اطلاعات کاربر
@@ -139,9 +139,9 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
             <div class="post">
                 <?php
                 // require_once 'Articles.php';
-                require_once __DIR__.'/../../Blog/Articles.php';
+                require_once __DIR__.'/../../Blog/Model/Articles.php';
                 // require_once 'Media.php';
-                require_once __DIR__ .'/../../Blog/Media.php';
+                require_once __DIR__ .'/../../Blog/Model/Media.php';
                 $articles = Articles::ShowAllUserArticles($UserID);
                 $UserInfo = Users::FetchUserInfoBYID($UserID);
 
