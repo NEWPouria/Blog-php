@@ -19,7 +19,7 @@ class Media
         // TXTID is refered to ArticleID and CommentID That We will Take it From the Form 
 
         // در فرانت هرجا که میخواهیم فایل آپلود کنیم نام فایل رو برابر با یکی از کتگوری ها قرار دهیم
-        $TargestPath = "../Uploader/uploads/$this->UserID/$this->Category/";
+        $TargestPath = "uploads/$this->UserID/$this->Category/";
         // $this->Path = $TargestPath . basename(date("y-m-d-h-i-s"));
         $isUploadFINE = true;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,6 +27,7 @@ class Media
 
             $FileType = explode("/", $InputFileType)[0];
             $FileFormat = explode("/", $InputFileType)[1];
+            // $this->Path = $TargestPath . basename(date("y-m-d-h-i-s")) . "." . $FileFormat;
             $this->Path = $TargestPath . basename(date("y-m-d-h-i-s")) . "." . $FileFormat;
             if ($FileType == "image" or $FileType == "video") {
                 $isUploadFINE = true;
@@ -47,7 +48,7 @@ class Media
             if ($isUploadFINE == false) {
                 echo "<script>alert('File is not Uploaded')</script>";
             } else {
-                if (move_uploaded_file($InputFileTemp, $this->Path . "." . $FileFormat)) {
+                if (move_uploaded_file($InputFileTemp, $this->Path)) { //ایرادی داشتیم که وقتی عکس به فولدر منتقل میشد فرمت دوباره نوشته میشد که آن را حل کردیم
 
                     // ارسال اطلاعات فایل به جدول Media
                     require_once "DataBase.php";

@@ -153,19 +153,24 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                             <div>
                                 <h3>Auther: <?= htmlspecialchars($UserInfo['UserName']) ?></h3>
                                 <p><?= htmlspecialchars($article['ArticleText']) ?></p>
-                                <p>اینجا تا بخش 2 انجام شده ArticleID ....   <?= htmlspecialchars($article['ArticleID']) ?></p>
+                                <!-- <p>اینجا تا بخش 2 انجام شده ArticleID ....   <?= htmlspecialchars($article['ArticleID']) ?></p> -->
                                 <?php
                                 $ArticleID = $article['ArticleID'];
                                 $MediaIDs=Media::GetArticleMediaID($ArticleID);
-                                echo"profilepage L160 <br>";
-                                print_r($MediaIDs);
+                                // echo"profilepage L160 <br>";
+                                // print_r($MediaIDs);
                                 foreach($MediaIDs as $MediaID){
-                                    echo "<li>" . htmlspecialchars($MediaID) . "</li>";
+                                    // echo "<li>" . htmlspecialchars($MediaID) . "</li>";
                                     $MediaInfo=Media::MediaInfo($MediaID);
-                                    echo "profilepage L165 -> <br>";
-                                    print_r($MediaInfo);
+                                    // echo "profilepage L165 -> <br>";
+                                    // print_r($MediaInfo);
+                                    // echo"دقتتتتتت<br>";
+                                    // echo $MediaInfo['MediaPath'];
                                     ?>
-                                   <img src="/Blog/<?= htmlspecialchars($MediaInfo["MediaPath"]) ?>" width="200"> 
+                                    
+                                   <img src="/../Blog/Controller/<?= $MediaInfo['MediaPath']?>" width="200"> 
+                                                                      
+                                   <!-- <img src="/../Blog/Controller/uploads/3/post/25-03-28-11-36-11.jpeg.jpeg" width="200"> -->
                                     <?php
                                 }
                                 
