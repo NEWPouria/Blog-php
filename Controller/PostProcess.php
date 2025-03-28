@@ -49,6 +49,7 @@ if (!isset($_SESSION["USER"])) {
         // echo "<pre>";
         // print_r($_FILES);
         // echo "</pre>";
+        
 
         header('Location: /../../Blog/View/ProfilePage.php');
         exit();

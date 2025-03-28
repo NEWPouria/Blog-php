@@ -153,17 +153,24 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                             <div>
                                 <h3>Auther: <?= htmlspecialchars($UserInfo['UserName']) ?></h3>
                                 <p><?= htmlspecialchars($article['ArticleText']) ?></p>
-                                <p><?= htmlspecialchars($article['ArticleID']) ?></p>
+                                <p>اینجا تا بخش 2 انجام شده ArticleID ....   <?= htmlspecialchars($article['ArticleID']) ?></p>
                                 <?php
                                 $ArticleID = $article['ArticleID'];
-                                // $ArticleMediaID=Media::GetArticleMediaID($ArticleID);
-                                // $ArticleMedia_src=Media::MediaInfo($ArticleMediaID); 
-                                $MediaID=Media::FindMediaIDFromArticleMediaTable($ArticleID);
-                                // echo"<br>hoooo<br>";
-                                // var_dump($MediaID[1]);
-                                $ArticleMedia_src = Media::MediaInfo(51);
+                                $MediaIDs=Media::GetArticleMediaID($ArticleID);
+                                echo"profilepage L160 <br>";
+                                print_r($MediaIDs);
+                                foreach($MediaIDs as $MediaID){
+                                    echo "<li>" . htmlspecialchars($MediaID) . "</li>";
+                                    $MediaInfo=Media::MediaInfo($MediaID);
+                                    echo "profilepage L165 -> <br>";
+                                    print_r($MediaInfo);
+                                    ?>
+                                   <img src="/Blog/<?= htmlspecialchars($MediaInfo["MediaPath"]) ?>" width="200"> 
+                                    <?php
+                                }
+                                
                                 ?>
-                                <img src="/Blog/<?= htmlspecialchars($ArticleMedia_src["MediaPath"]) ?>" width="200">
+                                
                                 <hr>
                             </div>
                         <?php endforeach; ?>

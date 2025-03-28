@@ -19,7 +19,7 @@ class Media
         // TXTID is refered to ArticleID and CommentID That We will Take it From the Form 
 
         // در فرانت هرجا که میخواهیم فایل آپلود کنیم نام فایل رو برابر با یکی از کتگوری ها قرار دهیم
-        $TargestPath = "Uploader/uploads/$this->UserID/$this->Category/";
+        $TargestPath = "../Uploader/uploads/$this->UserID/$this->Category/";
         // $this->Path = $TargestPath . basename(date("y-m-d-h-i-s"));
         $isUploadFINE = true;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -136,6 +136,13 @@ class Media
             }
         }
     }
+    /**
+     * Summary of GetArticleMediaID
+     * دقت شود که این تابع آرایه برمیگرداند و بهتر است درجایی که از آن استفاده میشود 
+     * foreach استفاده کنید
+     * @param mixed $ArticleID
+     * @return array
+     */
     public static function GetArticleMediaID($ArticleID)
     {
         $GetArticleMediaID_Data = new DataBase();
@@ -144,10 +151,26 @@ class Media
         $WillPrepare_GetArticleMediaID_sql->bind_param("i", $ArticleID);
         $WillPrepare_GetArticleMediaID_sql->execute();
         $GetArticleMediaID_sqlResult = $WillPrepare_GetArticleMediaID_sql->get_result();
-        $ArticleMediaID = $GetArticleMediaID_sqlResult->fetch_assoc();// returns single result
-        return $ArticleMediaID;
+        if ($GetArticleMediaID_sqlResult->num_rows > 0) {
+            $MediaIDs=array();
+            // $ArticleMediaID = $GetArticleMediaID_sqlResult->fetch_assoc();// returns single result
+            // return $ArticleMediaID;
+            while($row=$GetArticleMediaID_sqlResult->fetch_assoc()){
+                $MediaIDs[] =$row['MediaID'];
+            }
+            return $MediaIDs;
+        } else {
+            echo "no media .... (Media.php L151 )<br>";
+        }
+
         $GetArticleMediaID_Data->myclose();
     }
+    /**
+     * تمام اطلاعات مربوط به آیدی داده شده را از جدول مدیا برمیگرداند
+     * برای درک بهتر دیتابیس را چک کنید
+     * @param mixed $MediaID
+     * @return array|bool|null
+     */
     public static function MediaInfo($MediaID)
     {
         $MediaInfo_Data = new DataBase();
@@ -157,40 +180,14 @@ class Media
         $WillPrepare_MediaID_sql->execute();
         $MediaID_sqlResult = $WillPrepare_MediaID_sql->get_result();
         $MediaInfo = $MediaID_sqlResult->fetch_assoc();
+
+        // echo ('Media.php  L161');
+        // print_r($MediaInfo);
+        // echo ('Media.php  L163');
         return $MediaInfo;
         $MediaInfo_Data->myclose();
     }
-    /**
-     * Summary of FindMediaIDFromArticleMediaTable
-     * This Func finds MediaId From the article table and matches it with the MediaId From Media Table
-     * @param mixed $ArticleID this is int for the ID of article table
-     * @return void returns IDs of Media to find the Media in Media Table
-     */
-    public static function FindMediaIDFromArticleMediaTable($ArticleID)
-    {
-        $FuncData = new DataBase();
-        $FuncData_sql = "SELECT MediaID From ArticleMedia Where ArticleID=?";
-        $WillPrepare_FuncData_sql = $FuncData->myprepare($FuncData_sql);
-        $WillPrepare_FuncData_sql->bind_param("i", $ArticleID);
-        $WillPrepare_FuncData_sql->execute();
-        $FuncData_sqlResult = $WillPrepare_FuncData_sql->get_result();
 
-        echo "<br>ahhhhhhhkjkk<br>";
-        print_r($FuncData_sqlResult->fetch_array());
-        // print_r($FuncData_sqlResult->fetch_assoc());
-        $MediaID = [];
-        while ($row = $FuncData_sqlResult->fetch_all() ) {
-            $MediaID[] = $row;
-            // echo ("<br>gigigili<br>");
-            // var_dump($row);
-            // echo ("<br>-------<br>");
-            // var_dump($FuncData_sqlResult->fetch_assoc());
-            
-        }
-        
-        // echo "<br>eybaaba<br>";
-        //     var_dump($MediaID);return $MediaID;
-    }
 }
 
 ?>
