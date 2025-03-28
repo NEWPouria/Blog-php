@@ -28,7 +28,7 @@ class Media
             $FileType = explode("/", $InputFileType)[0];
             $FileFormat = explode("/", $InputFileType)[1];
             // $this->Path = $TargestPath . basename(date("y-m-d-h-i-s")) . "." . $FileFormat;
-            $this->Path = $TargestPath . basename(date("y-m-d-h-i-s")) . "." . $FileFormat;
+            $this->Path = $TargestPath . basename(date("y-m-d-h-i-s"))."_". uniqid() . "." . $FileFormat;
             if ($FileType == "image" or $FileType == "video") {
                 $isUploadFINE = true;
             } else {
