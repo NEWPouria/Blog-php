@@ -150,7 +150,8 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                 <div id="articles-container">
                     <?php if (!empty($articles)): ?>
                         <?php foreach ($articles as $article): ?>
-                            <div>
+                            
+                                <a href="singlepost.php?articleID=<?= $article['ArticleID']?>" style="text-decoration: none; color: inherit;">
                                 <h3>Auther: <?= htmlspecialchars($UserInfo['UserName']) ?></h3>
                                 <p><?= htmlspecialchars($article['ArticleText']) ?></p>
                                 <!-- <p>اینجا تا بخش 2 انجام شده ArticleID ....   <?= htmlspecialchars($article['ArticleID']) ?></p> -->
@@ -175,9 +176,9 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                                 }
                                 
                                 ?>
-                                
+                                </a>
                                 <hr>
-                            </div>
+                            
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>هیچ مقاله‌ای یافت نشد!</p>
