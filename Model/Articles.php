@@ -45,6 +45,23 @@ class Articles{
         return $articles;
         $Data->myclose();
     }
+
+    public static function GetArticleInfoById($ArticleID){
+        $Data=new DataBase();
+        $ArticleInfo_sqlcode="SELECT * FROM article WHERE ArticleID=?;";
+        $WillPrepare_ArticleInfo_sqlcode=$Data->myprepare($ArticleInfo_sqlcode);
+        $WillPrepare_ArticleInfo_sqlcode->bind_param("i",$ArticleID);
+        $WillPrepare_ArticleInfo_sqlcode->execute();
+        $ArticleInfo_sqlcode_Result=$WillPrepare_ArticleInfo_sqlcode->get_result();
+        $ArticleInfo=$ArticleInfo_sqlcode_Result->fetch_assoc();
+        //to see what does get_result() returns to me
+        print_r($ArticleInfo_sqlcode_Result);
+
+        print_r($ArticleInfo);
+
+        return $ArticleInfo;
+
+    }
 }
 
 

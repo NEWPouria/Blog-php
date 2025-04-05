@@ -4,11 +4,20 @@ require_once __DIR__ .'/../../Blog/Model/Media.php';
 require_once __DIR__ .'/../../Blog/Model/Users.php';
 
 // دریافت ID مقاله از پارامتر URL
-$articleId = isset($_GET['articleId']) ? (int)$_GET['articleId'] : 0;
+/*
+ اگر isset($_GET['articleId']) مقدارش true بود
+ (int)$_GET['articleId'] را داخل $articleId بریز
+ در غیر اینصورت عدد صفر را داخل $articleId بریز
+ */
+
+$articleId = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0; // Use Ternary Operator
+echo "line 14 <br>";
+echo $articleId;
+echo "line 14 <br>";
 
 // دریافت اطلاعات مقاله
-$article = Articles::GetArticleById($articleId);
-$UserInfo = Users::FetchUserInfoBYID($article['UserID'] ?? 0);
+$article = Articles::GetArticleInfoById($articleId);
+$UserInfo = Users::FetchUserInfoBYID($article['UserID'] ?? 0);  // Use Null coalescing Operator
 $MediaIDs = Media::GetArticleMediaID($articleId);
 ?>
 
