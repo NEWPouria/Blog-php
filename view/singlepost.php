@@ -11,9 +11,9 @@ require_once __DIR__ .'/../../Blog/Model/Users.php';
  */
 
 $articleId = isset($_GET['articleID']) ? (int)$_GET['articleID'] : 0; // Use Ternary Operator
-echo "line 14 <br>";
-echo $articleId;
-echo "line 14 <br>";
+echo "(SinglePost.php L14) <br>";
+echo "ArticleID id :" . $articleId . "<br>";
+
 
 // دریافت اطلاعات مقاله
 $article = Articles::GetArticleInfoById($articleId);

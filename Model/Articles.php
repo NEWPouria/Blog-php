@@ -55,9 +55,15 @@ class Articles{
         $ArticleInfo_sqlcode_Result=$WillPrepare_ArticleInfo_sqlcode->get_result();
         $ArticleInfo=$ArticleInfo_sqlcode_Result->fetch_assoc();
         //to see what does get_result() returns to me
+        echo "<br> (Article.php L58) <br>";
+        echo "<pre>";
         print_r($ArticleInfo_sqlcode_Result);
-
+        echo "</pre>";
+        //to see what does fetch_assoc() returns to me
+        echo "<br> (Article.php L60) <br>";
+        echo "<pre>";
         print_r($ArticleInfo);
+        echo "</pre>";
 
         return $ArticleInfo;
 
