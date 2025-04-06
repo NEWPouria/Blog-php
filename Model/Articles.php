@@ -1,7 +1,8 @@
 <?php
 // include(__DIR__."/DataBase.php");
 require_once 'Database.php';
-class Articles{
+class Articles
+{
     private $ID;
     private $AutherID;
     private $Title;
@@ -9,51 +10,55 @@ class Articles{
     private $ArticleText;
     private $ArticleDate;
     //private $ArticleImage; //هنوز برنامه نویسی نشده
-    public function Create($AutherID,$Title,$MetaTitel,$ArticleText){
+    public function Create($AutherID, $Title, $MetaTitel, $ArticleText)
+    {
         //نکته مهم//take $AutherID from $_SESSION["USER"] by searching database by user email and find UserID
-        $this->AutherID=$AutherID;
-        $this->Title= $Title;
-        $this->MetaTitel=$MetaTitel;
-        $this->ArticleText=$ArticleText;
+        $this->AutherID = $AutherID;
+        $this->Title = $Title;
+        $this->MetaTitel = $MetaTitel;
+        $this->ArticleText = $ArticleText;
         //انتقال اطلاعات بصورت کنترل شده به دیتابیس
-        $Data=new DataBase();
-        $ArticleCreateSqlCode="INSERT INTO Article(AutherID,Title,MetaTitel,ArticleText) VALUES (?,?,?,?) ";
-        $WillPrepareArticleCreateSqlCode=$Data->myprepare($ArticleCreateSqlCode);
-        $WillPrepareArticleCreateSqlCode->bind_param("isss",$this->AutherID,$this->Title,$this->MetaTitel,$this->ArticleText) ;
-        $WillPrepareArticleCreateSqlCode->execute() ;
-        
-        $CreatedArticleID=$WillPrepareArticleCreateSqlCode->insert_id;
-        $WillPrepareArticleCreateSqlCode->close() ;
+        $Data = new DataBase();
+        $ArticleCreateSqlCode = "INSERT INTO Article(AutherID,Title,MetaTitel,ArticleText) VALUES (?,?,?,?) ";
+        $WillPrepareArticleCreateSqlCode = $Data->myprepare($ArticleCreateSqlCode);
+        $WillPrepareArticleCreateSqlCode->bind_param("isss", $this->AutherID, $this->Title, $this->MetaTitel, $this->ArticleText);
+        $WillPrepareArticleCreateSqlCode->execute();
+
+        $CreatedArticleID = $WillPrepareArticleCreateSqlCode->insert_id;
+        $WillPrepareArticleCreateSqlCode->close();
         $Data->myclose();
         return $CreatedArticleID;
 
     }
-    public static function ShowAllUserArticles($UserID){
-        
-        $Data=new DataBase();   
-        $ShowAllUserArticlesSqlCode="SELECT * FROM Article WHERE AutherID=? ORDER BY ArticleDate DESC;";
-        $WillPrepareUserArticles=$Data->myprepare($ShowAllUserArticlesSqlCode);
-        $WillPrepareUserArticles->bind_param("i",$UserID);
-        $WillPrepareUserArticles->execute();
-        $sqlResult=$WillPrepareUserArticles->get_result();
-        
+    public static function ShowAllUserArticles($UserID)
+    {
 
-        $articles=[];
-        while($row=$sqlResult->fetch_assoc()){
-            $articles[]=$row;
+        $Data = new DataBase();
+        $ShowAllUserArticlesSqlCode = "SELECT * FROM Article WHERE AutherID=? ORDER BY ArticleDate DESC;";
+        $WillPrepareUserArticles = $Data->myprepare($ShowAllUserArticlesSqlCode);
+        $WillPrepareUserArticles->bind_param("i", $UserID);
+        $WillPrepareUserArticles->execute();
+        $sqlResult = $WillPrepareUserArticles->get_result();
+
+
+        $articles = [];
+        while ($row = $sqlResult->fetch_assoc()) {
+            $articles[] = $row;
         }
         return $articles;
         $Data->myclose();
     }
 
-    public static function GetArticleInfoById($ArticleID){
-        $Data=new DataBase();
-        $ArticleInfo_sqlcode="SELECT * FROM article WHERE ArticleID=?;";
-        $WillPrepare_ArticleInfo_sqlcode=$Data->myprepare($ArticleInfo_sqlcode);
-        $WillPrepare_ArticleInfo_sqlcode->bind_param("i",$ArticleID);
+    public static function GetArticleInfoById($ArticleID)
+    {
+        $Data = new DataBase();
+        $ArticleInfo_sqlcode = "SELECT * FROM article WHERE ArticleID=?;";
+        $WillPrepare_ArticleInfo_sqlcode = $Data->myprepare($ArticleInfo_sqlcode);
+        $WillPrepare_ArticleInfo_sqlcode->bind_param("i", $ArticleID);
         $WillPrepare_ArticleInfo_sqlcode->execute();
-        $ArticleInfo_sqlcode_Result=$WillPrepare_ArticleInfo_sqlcode->get_result();
-        $ArticleInfo=$ArticleInfo_sqlcode_Result->fetch_assoc();
+        $ArticleInfo_sqlcode_Result = $WillPrepare_ArticleInfo_sqlcode->get_result();
+
+        /*
         //to see what does get_result() returns to me
         echo "<br> (Article.php L58) <br>";
         echo "<pre>";
@@ -64,9 +69,13 @@ class Articles{
         echo "<pre>";
         print_r($ArticleInfo);
         echo "</pre>";
-
-        return $ArticleInfo;
-
+        */
+        if ($ArticleInfo_sqlcode_Result->num_rows > 0) {
+            $ArticleInfo = $ArticleInfo_sqlcode_Result->fetch_assoc();
+            return $ArticleInfo;
+        }else{
+            return "No Result Founded";
+        }
     }
 }
 
