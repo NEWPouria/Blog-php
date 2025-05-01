@@ -53,6 +53,7 @@ echo "</pre>";
     <title>صفحه سه ستونی با تم دارک و روشن</title>
     <link rel="stylesheet" href="/Blog/css/ProfilePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/Blog/css/comments.css">
 
 </head>
 <!-- کد های php برای نمایش profile -->
@@ -112,7 +113,7 @@ echo "</pre>";
                         <button class="back-button"><a href="javascript:history.back()" class="back-link"><i
                                     class="fa-solid fa-arrow-left"></i></a></button>
                         <a style="font-size:larger; font-weight:bold ; text-transform:uppercase"
-                            href="#"><?=  $UserInfo['UserName'] ?></a>
+                            href="#"><?= $UserInfo['UserName'] ?></a>
                     </div>
                     <button class="round_button" onclick="toggleTheme()"><i id="ThemeIcon"
                             class="fa-regular fa-moon"></i></button>
@@ -124,24 +125,57 @@ echo "</pre>";
             <!-- نمایش پست ها -->
             <div class="post">
                 <!-- بخشی از php مربوط به اینجا اول فایل قرار گرفته -->
-                
+
                 <div id="articles-container">
                     <!-- محتوای پست -->
-                     <h3>Auther: <?= htmlspecialchars($UserInfo['UserName']) ?></h3>
-                     <p><?= htmlspecialchars($article['ArticleText']) ?></p>
+                    <h3>Auther: <?= htmlspecialchars($UserInfo['UserName']) ?></h3>
+                    <p><?= htmlspecialchars($article['ArticleText']) ?></p>
 
                     <!-- نمایش عکس های پست -->
                     <?php if (!empty($article)): ?>
                         <?php foreach ($MediaIDs as $MediaID): ?>
                             <?php $MediaInfo = Media::MediaInfo($MediaID); ?>
                             <img src="/../Blog/Controller/<?= $MediaInfo['MediaPath'] ?>" width="200">
-                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                         </a>
                         <hr>
 
                     <?php else: ?>
                         <p>هیچ مقاله‌ای یافت نشد!</p>
                     <?php endif; ?>
+                    <!-- comment section -->
+                    <div class="comments-section">
+                        <link rel="stylesheet"
+                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <form action="" method="post" enctype="multipart/form-data">
+                                    <h5 class="card-title">Comments</h5>
+                                    <div class="mb-3">
+                                        <textarea class="form-control" placeholder="Post Your Reply ..."
+                                            rows="3"></textarea>
+                                    </div>
+                                    <div style="display: flex; flex-direction: row;align-items: center; justify-content: space-between;">
+                                        <input  style="display: none" type="file" name="Comment_Media[]" id="Comment_Images" accept="image/*" multiple hidden>
+                                        <button type="button" id="Comment_ImagesWithIcon" name="" class="round_button"><i class="fa-regular fa-images"></i></button>
+                                        <button class="btn"> <i class="fas fa-reply"> </i> Reply</button>
+
+                                    </div>
+                                </form>
+                                <!-- لیست کامنت‌ها -->
+                                <div class="mt-3">
+                                    <div class="card mb-2">
+                                        <div class="card-body">
+                                            <strong>کاربر نمونه <br></strong>
+                                            <p>این یک نظر آزمایشی است.</p>
+                                            <small class="text-muted">2 روز پیش</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- comment section -->
                 </div>
             </div>
         </div>
@@ -163,6 +197,7 @@ echo "</pre>";
         </div>
     </div>
     <script>
+        
 
         // اد ایونت لیسنتر رو داخل تابع نگزارید
         let NoIcon = document.getElementById('images');
@@ -170,6 +205,13 @@ echo "</pre>";
         TheIcon.addEventListener("click", () => {
             NoIcon.click();
         });
+
+        let CommentNoIcon = document.getElementById('Comment_Images');
+        let CommentTheIcon = document.getElementById('Comment_ImagesWithIcon');
+        CommentTheIcon.addEventListener("click", () => {
+            CommentNoIcon.click();
+        });
+
         function gocenter() {
             let publishDIV = document.getElementById('publish')
             publishDIV.classList.toggle('to-center');
@@ -246,6 +288,8 @@ echo "</pre>";
                 icon.classList.add(DefaultIcon);
             }
         }
+
+
 
     </script>
 </body>
