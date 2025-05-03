@@ -10,6 +10,7 @@ if (!isset($_SESSION["USER"])) {
 require_once __DIR__ . '/../../Blog/Model/Articles.php';
 require_once __DIR__ . '/../../Blog/Model/Media.php';
 require_once __DIR__ . '/../../Blog/Model/Users.php';
+require_once __DIR__ . '/../../Blog/Model/Comments.php';
 
 // دریافت ID مقاله از پارامتر URL
 /*
@@ -42,6 +43,14 @@ echo "(singlepost L41)<pre> MediaIDs ";
 print_r($MediaIDs);
 echo "</pre>";
 */
+
+// دریافت کامنت ها
+$Comments = new Comments;
+$CommentsList = $Comments->Read($articleId);
+echo "<pre>";
+print_r($CommentsList);
+echo "</pre>";
+
 ?>
 
 <!DOCTYPE html>
@@ -149,28 +158,51 @@ echo "</pre>";
                             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                         <div class="card mb-3">
                             <div class="card-body">
-                                <form action="" method="post" enctype="multipart/form-data">
+                                <form action="/../Blog/Controller/CommentProcess.php" method="post"
+                                    enctype="multipart/form-data">
+                                    <!-- دقت شود 
+                                     کا اینجا داریم articleId رو با post ارسال میکنیم
+                                     برای همین حتما باید مقدار رو در value اکو کنیم -->
+                                    <input type="hidden" name="ArticleID_Toward_Action" id=""
+                                        value="<?php echo $articleId; ?>">
                                     <h5 class="card-title">Comments</h5>
                                     <div class="mb-3">
-                                        <textarea class="form-control" placeholder="Post Your Reply ..."
-                                            rows="3"></textarea>
+                                        <textarea class="form-control" name="CommentText"
+                                            placeholder="Post Your Reply ..." rows="3"></textarea>
                                     </div>
-                                    <div style="display: flex; flex-direction: row;align-items: center; justify-content: space-between;">
-                                        <input  style="display: none" type="file" name="Comment_Media[]" id="Comment_Images" accept="image/*" multiple hidden>
-                                        <button type="button" id="Comment_ImagesWithIcon" name="" class="round_button"><i class="fa-regular fa-images"></i></button>
+                                    <div
+                                        style="display: flex; flex-direction: row;align-items: center; justify-content: space-between;">
+                                        <input style="display: none" type="file" name="Comment_Media[]"
+                                            id="Comment_Images" accept="image/*" multiple hidden>
+                                        <button type="button" id="Comment_ImagesWithIcon" name=""
+                                            class="round_button"><i class="fa-regular fa-images"></i></button>
                                         <button class="btn"> <i class="fas fa-reply"> </i> Reply</button>
 
                                     </div>
                                 </form>
                                 <!-- لیست کامنت‌ها -->
                                 <div class="mt-3">
-                                    <div class="card mb-2">
-                                        <div class="card-body">
-                                            <strong>کاربر نمونه <br></strong>
-                                            <p>این یک نظر آزمایشی است.</p>
-                                            <small class="text-muted">2 روز پیش</small>
-                                        </div>
-                                    </div>
+
+
+                                    <?php if (!empty(($CommentsList))): ?>
+
+                                        <?php foreach ($CommentsList as $Comment): ?>
+                                            <div class="card mb-2">
+                                                <div class="card-body">
+                                                    <strong><?= htmlspecialchars($Comment['CommentUserID']) ?><br></strong>
+                                                    <p><?= htmlspecialchars($Comment['CommentText']) ?><br></p>
+                                                    <small
+                                                        class="text-muted"><?= htmlspecialchars($Comment['CommentDate']) ?></small>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                                    <strong>کاربر نمونه <br></strong>
+                                    <p>این یک نظر آزمایشی است.</p>
+                                    <small class="text-muted">2 روز پیش</small>
+
+
                                 </div>
                             </div>
                         </div>
@@ -197,7 +229,7 @@ echo "</pre>";
         </div>
     </div>
     <script>
-        
+
 
         // اد ایونت لیسنتر رو داخل تابع نگزارید
         let NoIcon = document.getElementById('images');
