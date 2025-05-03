@@ -7,6 +7,9 @@ if (!isset($_SESSION["USER"])) {
 }
 ?>
 <?php
+// Include the necessary files
+require_once __DIR__ . '/../../Blog/vendor/autoload.php';
+use Carbon\Carbon;
 require_once __DIR__ . '/../../Blog/Model/Articles.php';
 require_once __DIR__ . '/../../Blog/Model/Media.php';
 require_once __DIR__ . '/../../Blog/Model/Users.php';
@@ -182,22 +185,24 @@ echo "</pre>";
                                 </form>
                                 <!-- لیست کامنت‌ها -->
                                 <div class="mt-3">
-
-
                                     <?php if (!empty(($CommentsList))): ?>
 
                                         <?php foreach ($CommentsList as $Comment): ?>
                                             <div class="card mb-2">
                                                 <div class="card-body">
                                                     <?php
-                                                    $CommenterInfo = Users::FetchUserInfoBYID($Comment['CommentUserID'] ?? 0); 
+                                                    $CommenterInfo = Users::FetchUserInfoBYID($Comment['CommentUserID'] ?? 0);
                                                     // echo "<pre>";
                                                     // print_r($CommenterInfo); echo "</pre>";
                                                     ?>
-                                                    <a style=" font-weight: 500 ; text-transform:uppercase"><?= htmlspecialchars($CommenterInfo['UserName']) ?><br></a>
+                                                    <a
+                                                        style=" font-weight: 500 ; text-transform:uppercase"><?= htmlspecialchars($CommenterInfo['UserName']) ?><br></a>
                                                     <p><?= htmlspecialchars($Comment['CommentText']) ?><br></p>
+                                                    <?php
+                                                    $Comment_RelativeTime = Carbon::createFromFormat('Y-m-d H:i:s', $Comment['CommentDate'])->diffForHumans();
+                                                    ?>
                                                     <small
-                                                        class="text-muted"><?= htmlspecialchars($Comment['CommentDate']) ?></small>
+                                                        class="text-muted"><?= htmlspecialchars($Comment_RelativeTime); ?></small>
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
@@ -206,8 +211,6 @@ echo "</pre>";
                                     <strong>کاربر نمونه <br></strong>
                                     <p>این یک نظر آزمایشی است.</p>
                                     <small class="text-muted">2 روز پیش</small>
-
-
                                 </div>
                             </div>
                         </div>
