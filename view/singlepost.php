@@ -189,7 +189,12 @@ echo "</pre>";
                                         <?php foreach ($CommentsList as $Comment): ?>
                                             <div class="card mb-2">
                                                 <div class="card-body">
-                                                    <strong><?= htmlspecialchars($Comment['CommentUserID']) ?><br></strong>
+                                                    <?php
+                                                    $CommenterInfo = Users::FetchUserInfoBYID($Comment['CommentUserID'] ?? 0); 
+                                                    // echo "<pre>";
+                                                    // print_r($CommenterInfo); echo "</pre>";
+                                                    ?>
+                                                    <a style=" font-weight: 500 ; text-transform:uppercase"><?= htmlspecialchars($CommenterInfo['UserName']) ?><br></a>
                                                     <p><?= htmlspecialchars($Comment['CommentText']) ?><br></p>
                                                     <small
                                                         class="text-muted"><?= htmlspecialchars($Comment['CommentDate']) ?></small>
