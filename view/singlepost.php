@@ -175,6 +175,7 @@ echo "</pre>";
                                     </div>
                                     <div
                                         style="display: flex; flex-direction: row;align-items: center; justify-content: space-between;">
+                                       
                                         <input style="display: none" type="file" name="Comment_Media[]"
                                             id="Comment_Images" accept="image/*" multiple hidden>
                                         <button type="button" id="Comment_ImagesWithIcon" name=""

@@ -111,7 +111,7 @@ class Media
                             }
 
                         } elseif ($this->Category === 'comment') {/* ایجاد اتصال بین جدول کامنت و جدول مدیاکامنت ها */
-                            $sql = "INSERT INTO ArticleMedia(ArticleID,MediaID) VALUES (?,?);";
+                            $sql = "INSERT INTO CommentMedia(CommentID,MediaID) VALUES (?,?);";
                             $stmt = $MediaDB->myprepare($sql);
                             $stmt->bind_param("ii", $TXTID, $insertedMediaID);
 

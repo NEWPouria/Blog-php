@@ -18,7 +18,10 @@ Class Comments{
         $WillPrepareCommentCreateSqlCode=$Data->myprepare($CommentCreateSqlCode);
         $WillPrepareCommentCreateSqlCode->bind_param("iisi",$this->Rate,$this->ArticleID,$this->Text,$this->UserID);
         $WillPrepareCommentCreateSqlCode->execute();
+        
+        $CreatedCommentID=$WillPrepareCommentCreateSqlCode->insert_id;
         $Data->myclose();
+        return $CreatedCommentID;
     }
 
     public function Read($ArticleID){
@@ -27,6 +30,7 @@ Class Comments{
         $WillPrepareCommentReadSqlCode=$Data->myprepare($CommentReadSqlCode);
         $WillPrepareCommentReadSqlCode->bind_param("i",$ArticleID);
         $WillPrepareCommentReadSqlCode->execute();
+
         $sqlResult=$WillPrepareCommentReadSqlCode->get_result();
         $Comments=[];
         while($row=$sqlResult->fetch_assoc()){
@@ -34,6 +38,7 @@ Class Comments{
         }
         return $Comments;
         $Data->myclose();
+        
     }
 
 }
