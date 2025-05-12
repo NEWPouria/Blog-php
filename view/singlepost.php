@@ -32,7 +32,7 @@ echo "ArticleID id :" . $articleId . "</pre>";
 // دریافت اطلاعات مقاله
 $article = Articles::GetArticleInfoById($articleId);
 $UserInfo = Users::FetchUserInfoBYID($article['AutherID'] ?? 0);  // Use Null coalescing Operator
-$MediaIDs = Media::GetArticleMediaID($articleId);
+$Article_MediaIDs = Media::GetArticleMediaID($articleId);
 
 /*
 //to see what does $article , $UserInfo , $MediaIDs returns to me
@@ -66,6 +66,9 @@ echo "</pre>";
     <link rel="stylesheet" href="/Blog/css/ProfilePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/Blog/css/comments.css">
+    <link rel="stylesheet" href="/Blog/css/Media.css">
+
+
 
 </head>
 <!-- کد های php برای نمایش profile -->
@@ -145,9 +148,9 @@ echo "</pre>";
 
                     <!-- نمایش عکس های پست -->
                     <?php if (!empty($article)): ?>
-                        <?php foreach ($MediaIDs as $MediaID): ?>
-                            <?php $MediaInfo = Media::MediaInfo($MediaID); ?>
-                            <img src="/../Blog/Controller/<?= $MediaInfo['MediaPath'] ?>" width="200">
+                        <?php foreach ($Article_MediaIDs as $MediaID): ?>
+                            <?php $Article_MediaInfo = Media::MediaInfo($MediaID); ?>
+                            <img src="/../Blog/Controller/<?= $Article_MediaInfo['MediaPath'] ?>" width="200">
                         <?php endforeach; ?>
                         </a>
                         <hr>
@@ -175,7 +178,7 @@ echo "</pre>";
                                     </div>
                                     <div
                                         style="display: flex; flex-direction: row;align-items: center; justify-content: space-between;">
-                                       
+
                                         <input style="display: none" type="file" name="Comment_Media[]"
                                             id="Comment_Images" accept="image/*" multiple hidden>
                                         <button type="button" id="Comment_ImagesWithIcon" name=""
@@ -204,6 +207,35 @@ echo "</pre>";
                                                     ?>
                                                     <small
                                                         class="text-muted"><?= htmlspecialchars($Comment_RelativeTime); ?></small>
+                                                    <?php
+
+                                                    ?>
+                                                    <!-- Comment MEDIA Part -->
+                                                    <?php
+                                                    $Comment_MediaIDs=Media::GetCommentMediaID($Comment['CommentID']);
+                                                    // echo "<pre>";
+                                                    // print_r($Comment_MediaIDs); echo "</pre>";
+                                                    
+
+                                                    $image_src = array(
+                                                        "/Blog/Controller/uploads/3/comment/25-05-04-06-57-43_6817b8a78c65f.jpeg",
+                                                        "/Blog/Controller/uploads/3/comment/25-05-04-06-57-43_6817b8a790bdc.png",
+                                                        "/Blog/Controller/uploads/3/comment/25-05-04-06-57-43_6817b8a790bdc.png",
+                                                        "/Blog/Controller/uploads/3/comment/25-05-04-06-57-43_6817b8a790bdc.png"
+                                                    );
+                                                    ?>
+                                                    <div class="Media-grid">
+                                                        <?php if (!empty($Comment_MediaIDs)): ?>
+                                                            <div class="image-grid">
+                                                                <?php foreach ($Comment_MediaIDs as $Comment_MediaID): ?>
+                                                                    <?php $Comment_MediaInfo = Media::MediaInfo($Comment_MediaID); ?>
+                                                                    
+                                                                    <img src="/Blog/Controller/<?= htmlspecialchars($Comment_MediaInfo["MediaPath"]); ?>" alt="Image">
+                                                                <?php endforeach; ?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
@@ -330,6 +362,16 @@ echo "</pre>";
             }
         }
 
+
+        document.querySelectorAll(".image-grid").forEach(grid => {
+            let imageCount = grid.children.length;
+
+            grid.classList.remove("one", "two", "three", "four"); // حذف کلاس‌های قبلی
+            if (imageCount === 1) grid.classList.add("one");
+            else if (imageCount === 2) grid.classList.add("two");
+            else if (imageCount === 3) grid.classList.add("three");
+            else grid.classList.add("four"); // محدودیت ۴ تصویر مثل توییتر
+        });
 
 
     </script>

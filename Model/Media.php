@@ -166,6 +166,26 @@ class Media
 
         $GetArticleMediaID_Data->myclose();
     }
+
+    public static function GetCommentMediaID($CommentID){
+        $GetCommentMediaID_Data=new DataBase();
+        $GetCommentMediaID_sql="SELECT * FROM commentmedia WHERE CommentID=?;";
+        $WillPrepare_GetCommentMediaID_sql=$GetCommentMediaID_Data->myprepare($GetCommentMediaID_sql);
+        $WillPrepare_GetCommentMediaID_sql->bind_param("i",$CommentID);
+        $WillPrepare_GetCommentMediaID_sql->execute();
+        $GetCommentMediaID_sqlResult=$WillPrepare_GetCommentMediaID_sql->get_result();
+        if($GetCommentMediaID_sqlResult->num_rows>0){
+            $MediaID=array();
+            while($row=$GetCommentMediaID_sqlResult->fetch_assoc()){
+                $MediaID[]=$row['MediaID'];
+            }
+            return $MediaID;
+        }else{
+            echo "no media .... (Media.php L184 )<br>";
+        }
+        $GetCommentMediaID_Data->myclose();
+    }
+
     /**
      * تمام اطلاعات مربوط به آیدی داده شده را از جدول مدیا برمیگرداند
      * برای درک بهتر دیتابیس را چک کنید

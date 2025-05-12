@@ -1,0 +1,15 @@
+.image-grid {
+    display: grid;
+    gap: 5px;
+}
+
+.image-grid img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.image-grid.one { grid-template-columns: 1fr; }
+.image-grid.two { grid-template-columns: repeat(2, 1fr); }
+.image-grid.three { grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; }
+.image-grid.four { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, auto); }

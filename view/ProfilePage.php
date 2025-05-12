@@ -157,10 +157,10 @@ $UserID = $User->FindUserID($_SESSION["USER"]);
                                 <!-- <p>اینجا تا بخش 2 انجام شده ArticleID ....   <?= htmlspecialchars($article['ArticleID']) ?></p> -->
                                 <?php
                                 $ArticleID = $article['ArticleID'];
-                                $MediaIDs=Media::GetArticleMediaID($ArticleID);
+                                $Articles_MediaIDs=Media::GetArticleMediaID($ArticleID);
                                 // echo"profilepage L160 <br>";
                                 // print_r($MediaIDs);
-                                foreach($MediaIDs as $MediaID){
+                                foreach($Articles_MediaIDs as $MediaID){
                                     // echo "<li>" . htmlspecialchars($MediaID) . "</li>";
                                     $MediaInfo=Media::MediaInfo($MediaID);
                                     // echo "profilepage L165 -> <br>";
