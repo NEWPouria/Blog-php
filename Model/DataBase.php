@@ -98,9 +98,9 @@ class DataBase
             CommentID INT NOT NULL,
             MediaID INT NOT NULL,
             FOREIGN KEY (CommentID) REFERENCES Comment(CommentID) ON DELETE CASCADE,
-            FOREIGN KEY (MediaID) REFERENCES Media(MediaID) ON DELETE CASCADE);";    
+            FOREIGN KEY (MediaID) REFERENCES Media(MediaID) ON DELETE CASCADE);";
         $CreateDB_SQLcode_Follows =
-        "CREATE TABLE IF NOT EXISTS Follows (
+            "CREATE TABLE IF NOT EXISTS Follows (
         ID INT AUTO_INCREMENT PRIMARY KEY,
         User_id int UNSIGNED NOT NULL,
         Follower_User_id int UNSIGNED NOT NULL,
