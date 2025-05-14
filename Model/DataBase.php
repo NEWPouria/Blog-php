@@ -101,14 +101,13 @@ class DataBase
             FOREIGN KEY (MediaID) REFERENCES Media(MediaID) ON DELETE CASCADE);";
         $CreateDB_SQLcode_Follows =
             "CREATE TABLE IF NOT EXISTS Follows (
-        ID INT AUTO_INCREMENT PRIMARY KEY,
-        User_id int UNSIGNED NOT NULL,
-        Follower_User_id int UNSIGNED NOT NULL,
-        FollowDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE KEY (User_id, Follows_User_id),
-        
-        FOREIGN KEY (User_id) REFERENCES USERS(UserID) ON DELETE CASCADE,
-        FOREIGN KEY (Follows_User_id) REFERENCES USERS(UserID) ON DELETE CASCADE;";
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            User_id int NOT NULL,
+            Follower_User_id int NOT NULL,
+            FollowDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY (User_id, Follower_User_id),
+            FOREIGN KEY (User_id) REFERENCES USERS(UserID) ON DELETE CASCADE,
+            FOREIGN KEY (Follower_User_id) REFERENCES USERS(UserID) ON DELETE CASCADE);";
 
         // if( $this->DBconnection->query($CreateDB_SQLcode_USERS)===TRUE&& $this->DBconnection->query($CreateDB_SQLcode_ARTICLE)===TRUE&& $this->DBconnection->query($CreateDB_SQLcode_Comment===TRUE)&& $this->DBconnection->query($CreateDB_SQLcode_Files)===TRUE){
         //     echo "Tables created successfully"; 
