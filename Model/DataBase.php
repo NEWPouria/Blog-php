@@ -103,7 +103,7 @@ class DataBase
         "CREATE TABLE IF NOT EXISTS Follows (
         ID INT AUTO_INCREMENT PRIMARY KEY,
         User_id int UNSIGNED NOT NULL,
-        Follows_User_id int UNSIGNED NOT NULL,
+        Follower_User_id int UNSIGNED NOT NULL,
         FollowDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE KEY (User_id, Follows_User_id),
         
