@@ -7,8 +7,11 @@ if (!isset($_SESSION["USER"])) {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="fa">
 <!-- کد های php برای نمایش profile -->
 <?php
+
 // require_once 'Users.php';
 // require_once 'C:/laragon/www/InClass/Blog/Users.php';
 require_once __DIR__ . '/../../Blog/Model/Users.php';
@@ -17,20 +20,34 @@ $LoggedUserEmail = $_SESSION["USER"];
 // فراخوانی اطلاعات کاربر
 $LoggedUser = new Users;
 $Loggedinfo = $LoggedUser->FetchUserInfo($_SESSION["USER"]);
-$LoggedUserName = strtoupper($Loggedinfo['UserName']);
+// $LoggedUserName = strtoupper($info['UserName']);
 $LoggedCreate_date = $Loggedinfo['Create_date'];
 
 // گرفتن ID کاربر چون در فرم پست گذاری برای ثبت متن به آن نیاز داریم
 $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
 // var_dump($UserID["UserID"]);
 ?>
-<!DOCTYPE html>
-<html lang="fa">
+
+<!-- دریافت اطلاعات صاحب صفحه -->
+<?php
+$PageOwner_UserID = isset($_GET['UserID']) ? (int) $_GET['UserID'] : 0;
+
+$PageOwner_Info = Users::FetchUserInfoBYID($PageOwner_UserID);
+// echo "<pre>";
+// print_r($PageOwner_Info);echo "</pre>";
+// echo $PageOwner_Info['UserName'];
+?>
+<?php
+if($LoggedUserID==$PageOwner_UserID){
+    header("Location: ProfilePage.php");
+    exit();
+}
+?>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - <?= $LoggedUserName; ?></title>
+    <title>صفحه سه ستونی با تم دارک و روشن</title>
     <link rel="stylesheet" href="/Blog/css/ProfilePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/Blog/favicon.ico" type="image/x-icon">
@@ -38,21 +55,7 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
 </head>
 
 
-<!-- کد های php برای فرم پست -->
-<?php
-// include_once 'Articles.php';
-// if(!empty($_POST)){
-// $text=$_POST['Post_Text'];
-// $article=new Articles();
-// $article->Create($UserID["UserID"],"title","meta",$text);
-// }
-
-?>
-
 <body>
-
-
-
     <div class="container">
         <!-- ستون چپ -->
         <div class="left-column">
@@ -66,7 +69,6 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
             <div id="publish" class="publish">
                 <h2>Publish</h2>
                 <div class="UpperPostBTNs">
-                    <!-- <button onclick="goceneter()">,flgfgl,fgl,f,lfgl,</button> -->
                     <button onclick="toggleBlur()" class="round_button"><i id="BlurIcon"
                             class="fa-regular fa-eye-slash"></i></button>
                     <button onclick="gocenter()" class="round_button"><i id="ExpandIcon"
@@ -104,7 +106,8 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
                         <button class="back-button">
                             <i class="fa-solid fa-arrow-left"></i> <!-- آیکون قبگرد -->
                         </button>
-                        <a style="font-size:larger; font-weight:bold ;" href="#"><?php echo $LoggedUserName; ?></a>
+                        <a style="font-size:larger; font-weight:bold ;"
+                            href="#"><?php echo ucfirst($PageOwner_Info['UserName']); ?></a>
                     </div>
                     <button class="round_button" onclick="toggleTheme()"><i id="ThemeIcon"
                             class="fa-regular fa-moon"></i></button>
@@ -117,8 +120,11 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
                     </div>
                     <div class="UnderBannerBTNs">
 
-                        <!-- <button class="oval_button"> <i class="fa-solid fa-user-plus"></i> Edit Profile </button> -->
-                        <button class="oval_button"> <i class=""></i> Edit Profile </button>
+                        <button class="oval_button" id="Follow-btn"
+                            data-page-owner-user-id="<?php echo $PageOwner_UserID; ?>" data-following="false"><i
+                                class="fa-solid fa-user-plus"></i> Follow
+                        </button>
+
                         <button class="round_button"> <i class="fa-solid fa-magnifying-glass"></i></button>
                         <button class="round_button"> <i class="fa-solid fa-ellipsis"></i></button>
                     </div>
@@ -126,9 +132,9 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
 
             </div>
             <div class="User_info" style=" padding-top: 5px;">
-                <h3><?php echo $LoggedUserName; ?></h3>
-                <H4><?php echo $LoggedUserEmail; ?></H4>
-                <p>Joined Date <?= $LoggedCreate_date; ?></p>
+                <h3><?php echo ucfirst($PageOwner_Info['UserName']); ?></h3>
+                <H4><?php echo ucfirst($PageOwner_Info['Email']); ?></H4>
+                <p>Joined Date <?= ucfirst($PageOwner_Info['Create_date']); ?></p>
                 <div>
                     <a href="#">Following</a>
                     <a href="#">Follower</a>
@@ -146,8 +152,8 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
                 require_once __DIR__ . '/../../Blog/Model/Articles.php';
                 // require_once 'Media.php';
                 require_once __DIR__ . '/../../Blog/Model/Media.php';
-                $articles = Articles::ShowAllUserArticles($LoggedUserID);
-                $LoggedUserInfo = Users::FetchUserInfoBYID($LoggedUserID);
+                $articles = Articles::ShowAllUserArticles($PageOwner_UserID);
+                $UserInfo = Users::FetchUserInfoBYID($PageOwner_UserID);
 
                 ?>
                 <h1>لیست مقالات</h1>
@@ -157,15 +163,16 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
 
                             <a href="singlepost.php?articleID=<?= $article['ArticleID'] ?>"
                                 style="text-decoration: none; color: inherit;">
-                                <h3>Auther: <?= htmlspecialchars($LoggedUserInfo['UserName']) ?></h3>
+                                <h3>Auther: <?= htmlspecialchars($UserInfo['UserName']) ?></h3>
                                 <p><?= htmlspecialchars($article['ArticleText']) ?></p>
                                 <!-- <p>اینجا تا بخش 2 انجام شده ArticleID ....   <?= htmlspecialchars($article['ArticleID']) ?></p> -->
                                 <?php
                                 $ArticleID = $article['ArticleID'];
                                 $Articles_MediaIDs = Media::GetArticleMediaID($ArticleID);
                                 // echo"profilepage L160 <br>";
-                                // print_r($MediaIDs); ?
+                                // print_r($MediaIDs);                                
                                 ?>
+
                                 <?php if (is_array($Articles_MediaIDs) && !empty($Articles_MediaIDs)): ?>
                                     <?php foreach ($Articles_MediaIDs as $MediaID): ?>
                                         <?php
@@ -271,42 +278,6 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
         }
         typeWriter();
 
-        // setInterval(typeWriter, timer);
-
-        // const textElement1 = document.getElementById('publish');
-        // // const textElement = textElement1.placeholder;
-        // const cursorElement = document.querySelector('.cursor');
-        // const texts = ['متن اول', 'متن دوم', 'متن سوم'];
-        // let currentTextIndex = 0;
-        // let currentCharIndex = 0;
-        // let isDeleting = false;
-
-        // function type() {
-        //     const currentText = texts[currentTextIndex];
-        //     if (isDeleting) {
-        //         currentCharIndex--;
-        //         textElement.textContent = currentText.substring(0, currentCharIndex);
-        //         if (currentCharIndex === 0) {
-        //             isDeleting = false;
-        //             currentTextIndex = (currentTextIndex + 1) % texts.length;
-        //         }
-        //     } else {
-        //         currentCharIndex++;
-        //         textElement.textContent = currentText.substring(0, currentCharIndex);
-        //         if (currentCharIndex === currentText.length) {
-        //             isDeleting = true;
-        //         }
-        //     }
-        //     setTimeout(type, isDeleting ? 50 : 100);
-        // }
-
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     setTimeout(type, 1000);
-        // });
-
-
-
-
         // تابع تغییر تم
         function toggleTheme() {
             const body = document.body;
@@ -334,6 +305,75 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
                 icon.classList.add(DefaultIcon);
             }
         }
+
+
+        /**کد های کربوط به دکمه فالو Follow-btn */
+        /*
+        document.getElementById("Follow-btn").addEventListener("click", function () {
+            const PageOwner_UserID=this.dataset.pageOwnerUserId;
+            // alert(PageOwner_UserID);
+            const xhr=new XMLHttpRequest();
+            xhr.open('POST','../Controller/FollowProcess.php',true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload=function(){
+                if(xhr.status===200){
+                    const data=JSON.parse(xhr.responseText);
+                    if(data.success){
+                        const btn=document.getElementById("Follow-btn");
+                        btn.textContent=data.following ? "Unfollow" : "Follow";
+                        btn.style.backgroundColor=data.following ? "green" : "gray" ;
+                    }else{
+                        alert("Error" + data.message);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({user_id: PageOwner_UserID}))
+        });
+        */
+        document.getElementById("Follow-btn").addEventListener("click", function () {
+            const btn = this;
+            const PageOwner_UserID = btn.dataset.pageOwnerUserId;
+            const isCurrentlyFollowing = btn.dataset.following === "true"; // وضعیت فعلی
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '../Controller/FollowProcess.php', true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        if (data.success) {
+                            // وضعیت جدید را بر اساس پاسخ سرور آپدیت کنید
+                            btn.dataset.following = data.following;
+                            btn.textContent = data.following ? "Unfollow" : "Follow";
+                            btn.style.backgroundColor = data.following ? "#2e2e2e" : "#4D6BFE";
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    } catch (e) {
+                        console.error("Invalid JSON:", e);
+                        alert("Server error!");
+                    }
+                } else {
+                    alert("Request failed: " + xhr.status);
+                }
+            };
+
+            xhr.onerror = function () {
+                alert("Network error!");
+            };
+
+            // ارسال درخواست با وضعیت فعلی به سرور
+            xhr.send(JSON.stringify({
+                user_id: PageOwner_UserID,
+                action: isCurrentlyFollowing ? "unfollow" : "follow" // به سرور بگویید چه عملی انجام شود
+            }));
+        });
+
+
+
     </script>
 
 </body>

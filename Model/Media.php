@@ -161,7 +161,7 @@ class Media
             }
             return $MediaIDs;
         } else {
-            echo "no media .... (Media.php L151 )<br>";
+            // echo "no media .... (Media.php L151 )<br>";
         }
 
         $GetArticleMediaID_Data->myclose();

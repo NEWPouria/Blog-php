@@ -11,6 +11,8 @@ if(isset($_SESSION["USER"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/pico.blue.min.css">
+    <link rel="icon" href="/Blog/favicon.ico" type="image/x-icon">
+
     <title>ثبت نام</title>
 </head>
 

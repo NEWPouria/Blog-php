@@ -67,6 +67,7 @@ echo "</pre>";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/Blog/css/comments.css">
     <link rel="stylesheet" href="/Blog/css/Media.css">
+    <link rel="icon" href="/Blog/favicon.ico" type="image/x-icon">
 
 
 

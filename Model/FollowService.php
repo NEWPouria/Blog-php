@@ -19,13 +19,16 @@ class FollowService
         $this->FollowerUserID = $FollowerUserID;
 
         $data = new DataBase();
-        $FollowInsertSql = "INSERT IGNORE INTO Follows (UserID, FollowerUserID, FollowDate) VALUES (?,?)";
+        $FollowInsertSql = "INSERT IGNORE INTO Follows (User_id, Follower_User_id) VALUES (?,?)";
         $WillPrepareFollow = $data->myprepare($FollowInsertSql);
         $WillPrepareFollow->bind_param("ii", $this->UserID, $this->FollowerUserID);
         $WillPrepareFollow->execute();
         $WillPrepareFollow->close();
 
         $data->myclose();
+        // echo json_encode(["FollowService.php L29"]);
+        // return true;
+        error_log("FollowService.php: Follow operation executed for UserID=$UserID");
         return true;
     }
     public function UnFollow($UserID, $FollowerUserID)
@@ -36,7 +39,7 @@ class FollowService
         $this->UserID = $UserID;
         $this->FollowerUserID = $FollowerUserID;
         $data = new DataBase();
-        $UnFollowSql = "DELETE FROM Follows WHERE UserID=? AND FollowerUserID=?";
+        $UnFollowSql = "DELETE FROM Follows WHERE User_id=? AND Follower_User_id=?";
         $WillPrepareUnFollow = $data->myprepare($UnFollowSql);
         $WillPrepareUnFollow->bind_param("ii", $this->UserID, $this->FollowerUserID);
         $WillPrepareUnFollow->execute();
