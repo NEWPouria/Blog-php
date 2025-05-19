@@ -2,7 +2,7 @@
 // Session cannot be started after headers have already been sent in C:\laragon\www\InClass\Blog\ProfilePage.php on line 14
 session_start();
 if (!isset($_SESSION["USER"])) {
-    header("Location: MyloginForm.php");
+    header("Location: loginForm.php");
     exit();
 }
 ?>
@@ -74,7 +74,7 @@ echo "</pre>";
 </head>
 <!-- کد های php برای نمایش profile -->
 
-<body>
+<body class="dark-mode">
 
 
 

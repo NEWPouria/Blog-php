@@ -20,7 +20,7 @@ if(isset($_SESSION["USER"])){
 include(__DIR__."/../../Blog/Model/Users.php");
 
 if (isset($_SESSION["user"])) {
-    header("Location: MyLoginForm.php");
+    header("Location: LoginForm.php");
 }
 
 if (!empty($_POST)) {
@@ -78,7 +78,7 @@ if (!empty($_POST)) {
 
         $CreateMyNewUser=new Users();
         $CreateMyNewUser->Create($sanitized_name,$_POST['password'],$_POST['email'],$_POST['phone']);
-        header("Location: MyLoginForm.php");
+        header("Location: LoginForm.php");
         die("<center><h1>User Created</h1></center>");
         
     } else {

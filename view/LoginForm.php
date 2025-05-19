@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(isset($_SESSION["USER"])){
+if (isset($_SESSION["USER"])) {
     header("Location: ProfilePage.php");
     exit();
 }
@@ -18,7 +18,7 @@ if(isset($_SESSION["USER"])){
 </head>
 
 <?php
-include(__DIR__."/../../Blog/Model/Users.php");
+include(__DIR__ . "/../../Blog/Model/Users.php");
 
 if (!empty($_POST)) {
 
@@ -26,13 +26,13 @@ if (!empty($_POST)) {
     $password = $_POST['password'];
 
     // کنترل ایمیل ورودی توسط کابر
-    $email=filter_var($email,FILTER_SANITIZE_EMAIL);
-    if(!filter_var($email,FILTER_VALIDATE_EMAIL)===false){
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
         //در تایع لاگین یوزرنیم کاربر در سشن ذخیره میشود
-        $Loging_in_User=new Users();
+        $Loging_in_User = new Users();
         $Loging_in_User->Login($email, $password);
-    }else{
-        echo "ERROR: Structure of "."<u>$email</u>"." is not valid . Please check Email and try again...";
+    } else {
+        echo "ERROR: Structure of " . "<u>$email</u>" . " is not valid . Please check Email and try again...";
     }
 
     //بدون کنترل ایمیل ورودی توسط کاربر
@@ -61,7 +61,10 @@ if (!empty($_POST)) {
                         Password
                         <input type="password" name="password" placeholder="Password" aria-label="Password">
                     </label>
-                    <input name="terms" type="checkbox" role="switch" />Remember Me</label>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div> <input name="terms" type="checkbox" role="switch" />Remember Me</div>
+                        <div>Register <a href="RegisterForm.php">here</a></div>
+                    </div>
                 </fieldset>
                 <button type="submit">Login</button>
             </form>

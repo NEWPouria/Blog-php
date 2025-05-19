@@ -2,7 +2,7 @@
 // Session cannot be started after headers have already been sent in C:\laragon\www\InClass\Blog\ProfilePage.php on line 14
 session_start();
 if (!isset($_SESSION["USER"])) {
-    header("Location: MyloginForm.php");
+    header("Location: loginForm.php");
     exit();
 }
 ?>
@@ -49,7 +49,7 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
 
 ?>
 
-<body>
+<body class="dark-mode">
 
 
 
@@ -66,7 +66,6 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
             <div id="publish" class="publish">
                 <h2>Publish</h2>
                 <div class="UpperPostBTNs">
-                    <!-- <button onclick="goceneter()">,flgfgl,fgl,f,lfgl,</button> -->
                     <button onclick="toggleBlur()" class="round_button"><i id="BlurIcon"
                             class="fa-regular fa-eye-slash"></i></button>
                     <button onclick="gocenter()" class="round_button"><i id="ExpandIcon"
@@ -116,9 +115,7 @@ $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
                         <img src="/Blog/css/profile.png" alt="profile_pic">
                     </div>
                     <div class="UnderBannerBTNs">
-
-                        <!-- <button class="oval_button"> <i class="fa-solid fa-user-plus"></i> Edit Profile </button> -->
-                        <button class="oval_button"> <i class=""></i> Edit Profile </button>
+                        <a href="EditProfile.php?UserID=<?= $LoggedUserID; ?>"><button class="oval_button"> <i class=""></i> Edit Profile </button></a>
                         <button class="round_button"> <i class="fa-solid fa-magnifying-glass"></i></button>
                         <button class="round_button"> <i class="fa-solid fa-ellipsis"></i></button>
                     </div>

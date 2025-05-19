@@ -2,7 +2,7 @@
 // Session cannot be started after headers have already been sent in C:\laragon\www\InClass\Blog\ProfilePage.php on line 14
 session_start();
 if (!isset($_SESSION["USER"])) {
-    header("Location: MyloginForm.php");
+    header("Location: loginForm.php");
     exit();
 }
 ?>
@@ -47,7 +47,7 @@ if($LoggedUserID==$PageOwner_UserID){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه سه ستونی با تم دارک و روشن</title>
+    <title><?= $PageOwner_Info['UserName'] ?></title>
     <link rel="stylesheet" href="/Blog/css/ProfilePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/Blog/favicon.ico" type="image/x-icon">
@@ -55,7 +55,7 @@ if($LoggedUserID==$PageOwner_UserID){
 </head>
 
 
-<body>
+<body class="dark-mode">
     <div class="container">
         <!-- ستون چپ -->
         <div class="left-column">
