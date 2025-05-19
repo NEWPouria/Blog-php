@@ -32,6 +32,7 @@ echo "ArticleID id :" . $articleId . "</pre>";
 // دریافت اطلاعات مقاله
 $article = Articles::GetArticleInfoById($articleId);
 $UserInfo = Users::FetchUserInfoBYID($article['AutherID'] ?? 0);  // Use Null coalescing Operator
+
 $Article_MediaIDs = Media::GetArticleMediaID($articleId);
 
 /*
@@ -50,9 +51,9 @@ echo "</pre>";
 // دریافت کامنت ها
 $Comments = new Comments;
 $CommentsList = $Comments->Read($articleId);
-echo "<pre>";
-print_r($CommentsList);
-echo "</pre>";
+// echo "<pre>";
+// print_r($CommentsList);
+// echo "</pre>";
 
 ?>
 
@@ -129,7 +130,7 @@ echo "</pre>";
                         <button class="back-button"><a href="javascript:history.back()" class="back-link"><i
                                     class="fa-solid fa-arrow-left"></i></a></button>
                         <a style="font-size:larger; font-weight:bold ; text-transform:uppercase"
-                            href="#"><?= $UserInfo['UserName'] ?></a>
+                            href="UsersPage.php?UserID=<?= $article['AutherID']; ?>"><?= $UserInfo['UserName'] ?></a>
                     </div>
                     <button class="round_button" onclick="toggleTheme()"><i id="ThemeIcon"
                             class="fa-regular fa-moon"></i></button>

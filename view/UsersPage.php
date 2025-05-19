@@ -38,7 +38,23 @@ $PageOwner_Info = Users::FetchUserInfoBYID($PageOwner_UserID);
 // echo $PageOwner_Info['UserName'];
 ?>
 <?php
-if($LoggedUserID==$PageOwner_UserID){
+/**چک کردن اینکه آیا کاربر لاگین کرده یوزر این صفحه رو فالو دارد یا خیر */
+require_once '../Model/FollowService.php';
+$checkFollow = new FollowService();
+$checkFollow->isFollowing($LoggedUserID, $PageOwner_UserID);
+// echo "<pre> CheckFollow->isFollowing(PageOwner $PageOwner_UserID,LoggedUser $LoggedUserID);</pre>"; 
+// echo $checkFollow->isFollowing($PageOwner_UserID ,$LoggedUserID) ? "Follow this page" : "does not follow this page";
+?>
+<?php
+/**کد های مربوط به شمارش فالو */
+require_once '../Model/FollowService.php';
+$FollowingCount = FollowService::FollowingCount($PageOwner_UserID);
+$FollowerCount = FollowService::FollowerCount($PageOwner_UserID);
+// var_dump($FollowingCount);
+// var_dump($FollowerCount);
+?>
+<?php
+if ($LoggedUserID == $PageOwner_UserID) {
     header("Location: ProfilePage.php");
     exit();
 }
@@ -119,11 +135,16 @@ if($LoggedUserID==$PageOwner_UserID){
                         <img src="/Blog/css/profile.png" alt="profile_pic">
                     </div>
                     <div class="UnderBannerBTNs">
-
-                        <button class="oval_button" id="Follow-btn"
-                            data-page-owner-user-id="<?php echo $PageOwner_UserID; ?>" data-following="false"><i
-                                class="fa-solid fa-user-plus"></i> Follow
-                        </button>
+                        <!-- چک فالو بودن و اعمال در دکمه -->
+                        <?php if (!$checkFollow->isFollowing($PageOwner_UserID, $LoggedUserID)): ?>
+                            <button class="oval_button" id="Follow-btn" style="background-color:#4D6BFE ;"
+                                data-page-owner-user-id="<?php echo $PageOwner_UserID; ?>" data-following="false"> Follow
+                            </button>
+                        <?php else: ?>
+                            <button class="oval_button" id="Follow-btn" style="background-color:#2e2e2e ;"
+                                data-page-owner-user-id="<?php echo $PageOwner_UserID; ?>" data-following="true"> UnFollow
+                            </button>
+                        <?php endif; ?>
 
                         <button class="round_button"> <i class="fa-solid fa-magnifying-glass"></i></button>
                         <button class="round_button"> <i class="fa-solid fa-ellipsis"></i></button>
@@ -135,15 +156,16 @@ if($LoggedUserID==$PageOwner_UserID){
                 <h3><?php echo ucfirst($PageOwner_Info['UserName']); ?></h3>
                 <H4><?php echo ucfirst($PageOwner_Info['Email']); ?></H4>
                 <p>Joined Date <?= ucfirst($PageOwner_Info['Create_date']); ?></p>
-                <div>
-                    <a href="#">Following</a>
-                    <a href="#">Follower</a>
+                <br>
+                <div style="display: flex; justify-items: center; gap: 10px; color: blue;">
+                    <p><?= $FollowingCount ?> Following</p>
+                    <p><?= $FollowerCount ?> Follower</p>
                 </div>
+                <br>
             </div>
 
             <hr>
             <hr>
-            <h2>پست‌ها</h2>
 
             <!-- نمایش پست ها -->
             <div class="post">
@@ -156,14 +178,21 @@ if($LoggedUserID==$PageOwner_UserID){
                 $UserInfo = Users::FetchUserInfoBYID($PageOwner_UserID);
 
                 ?>
-                <h1>لیست مقالات</h1>
                 <div id="articles-container">
                     <?php if (!empty($articles)): ?>
                         <?php foreach ($articles as $article): ?>
 
                             <a href="singlepost.php?articleID=<?= $article['ArticleID'] ?>"
                                 style="text-decoration: none; color: inherit;">
-                                <h3>Auther: <?= htmlspecialchars($UserInfo['UserName']) ?></h3>
+
+                                <?php
+                                $Autherinfo = Users::FetchUserInfoBYID($article['AutherID']);
+                                ?>
+                                <div class="profile_pic"
+                                    style="display: flex; justify-content: flex-start; align-items: center; gap: 10px;">
+                                    <img style="width: 50px; height: 50px;" src="/Blog/css/profile.png" alt="">
+                                    <h3> <?= htmlspecialchars(ucfirst($Autherinfo['UserName'])) ?></h3>
+                                </div>
                                 <p><?= htmlspecialchars($article['ArticleText']) ?></p>
                                 <!-- <p>اینجا تا بخش 2 انجام شده ArticleID ....   <?= htmlspecialchars($article['ArticleID']) ?></p> -->
                                 <?php

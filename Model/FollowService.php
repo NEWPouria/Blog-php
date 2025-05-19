@@ -47,36 +47,36 @@ class FollowService
         return true;
 
     }
-    public function FollowingCount($UserID)
+    public static function FollowingCount($UserID)
     {
-        $this->UserID = $UserID;
+        
         $data = new DataBase();
-        $FollowingCountSql = "SELECT COUNT(*) as FollowingCount FROM Follows WHERE User_id=?";
+        $FollowingCountSql = "SELECT COUNT(*) as FollowingCount FROM Follows WHERE Follower_User_id=?";
         $WillPrepareFollowingCount = $data->myprepare($FollowingCountSql);
-        $WillPrepareFollowingCount->bind_param("i", $this->UserID);
+        $WillPrepareFollowingCount->bind_param("i", $UserID);
         $WillPrepareFollowingCount->execute();
         $result = $WillPrepareFollowingCount->get_result();
         $row = $result->fetch_assoc();
         return $row['FollowingCount'];
     }
-    public function FollowerCount($UserID)
+    public static function FollowerCount($UserID)
     {
-        $this->UserID = $UserID;
+        
         $data = new DataBase();
-        $FollowerCountSql = "SELECT COUNT(*) as FollowerCount FROM Follows WHERE Follower_User_id=?";
+        $FollowerCountSql = "SELECT COUNT(*) as FollowerCount FROM Follows WHERE User_id=?";
         $WillPrepareFollowerCount = $data->myprepare($FollowerCountSql);
-        $WillPrepareFollowerCount->bind_param("i", $this->UserID);
+        $WillPrepareFollowerCount->bind_param("i", $UserID);
         $WillPrepareFollowerCount->execute();
         $result = $WillPrepareFollowerCount->get_result();
         $row = $result->fetch_assoc();
         return $row['FollowerCount'];
     }
-    public function MutualFollow($LogedInUserID, $PageOwnerUserID)
+    public function MutualFollow($LoggedInUserID, $PageOwnerUserID)
     {
         $data = new DataBase();
         $MutualFollowSQL = "SELECT COUNT(*) FROM Follows WHERE (User_id=? AND Follower_User_id=?) OR (User_id=? AND Follower_User_id=?)";
         $WillPrepareMutualFollow = $data->myprepare($MutualFollowSQL);
-        $WillPrepareMutualFollow->bind_param("iiii", $LogedInUserID, $PageOwnerUserID, $PageOwnerUserID, $LogedInUserID);
+        $WillPrepareMutualFollow->bind_param("iiii", $LoggedInUserID, $PageOwnerUserID, $PageOwnerUserID, $LoggedInUserID);
         $WillPrepareMutualFollow->execute();
         $result = $WillPrepareMutualFollow->get_result();
         $row = $result->fetch_assoc();
@@ -86,6 +86,20 @@ class FollowService
             return false;
         }
     }
-
+    public function isFollowing( $PageOwnerUserID,$LoggedInUserID)
+    {
+        $data = new DataBase();
+        $isFollowingSQL = "SELECT COUNT(*) FROM Follows WHERE User_id=? AND Follower_User_id=?";
+        $WillPrepareisFollowing = $data->myprepare($isFollowingSQL);
+        $WillPrepareisFollowing->bind_param("ii", $PageOwnerUserID, $LoggedInUserID);
+        $WillPrepareisFollowing->execute();
+        $result = $WillPrepareisFollowing->get_result();
+        $row = $result->fetch_assoc();
+        if ($row['COUNT(*)'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 ?>

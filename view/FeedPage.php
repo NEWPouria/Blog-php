@@ -9,7 +9,8 @@ if (!isset($_SESSION["USER"])) {
 
 <!-- کد های php برای نمایش profile -->
 <?php
-
+// require_once 'Users.php';
+// require_once 'C:/laragon/www/InClass/Blog/Users.php';
 require_once __DIR__ . '/../../Blog/Model/Users.php';
 $LoggedUserEmail = $_SESSION["USER"];
 
@@ -22,14 +23,6 @@ $LoggedCreate_date = $Loggedinfo['Create_date'];
 // گرفتن ID کاربر چون در فرم پست گذاری برای ثبت متن به آن نیاز داریم
 $LoggedUserID = $LoggedUser->FindUserID($_SESSION["USER"]);
 // var_dump($UserID["UserID"]);
-?>
-<?php
-/**کد های مربوط به شمارش فالو */
-require_once '../Model/FollowService.php';
-$FollowingCount = FollowService::FollowingCount($LoggedUserID) ;
-$FollowerCount = FollowService::FollowerCount($LoggedUserID) ;
-// var_dump($FollowingCount);
-// var_dump($FollowerCount);
 ?>
 <!DOCTYPE html>
 <html lang="fa">
@@ -44,7 +37,21 @@ $FollowerCount = FollowService::FollowerCount($LoggedUserID) ;
 
 </head>
 
+
+<!-- کد های php برای فرم پست -->
+<?php
+// include_once 'Articles.php';
+// if(!empty($_POST)){
+// $text=$_POST['Post_Text'];
+// $article=new Articles();
+// $article->Create($UserID["UserID"],"title","meta",$text);
+// }
+
+?>
+
 <body class="dark-mode">
+
+
 
     <div class="container">
         <!-- ستون چپ -->
@@ -55,6 +62,7 @@ $FollowerCount = FollowService::FollowerCount($LoggedUserID) ;
                 <li><a href="#">درباره ما</a></li>
                 <li><a href="#">تماس با ما</a></li>
             </ul>
+
             <div id="publish" class="publish">
                 <h2>Publish</h2>
                 <div class="UpperPostBTNs">
@@ -78,9 +86,12 @@ $FollowerCount = FollowService::FollowerCount($LoggedUserID) ;
                             <button type="submit" class="oval_button"><i class="fa-regular fa-pen-to-square"></i>
                                 POST </button>
                         </div>
+
                     </div>
+
                 </form>
             </div>
+
         </div>
 
         <!-- ستون وسط -->
@@ -89,53 +100,25 @@ $FollowerCount = FollowService::FollowerCount($LoggedUserID) ;
             <div class="banner">
                 <div class="upper_banner">
                     <div style="display: flex; align-items: center; gap: 3px; ">
-                        <button class="back-button">
-                            <i class="fa-solid fa-arrow-left"></i> <!-- آیکون قبگرد -->
-                        </button>
+                        
                         <a style="font-size:larger; font-weight:bold ;" href="#"><?php echo $LoggedUserName; ?></a>
                     </div>
                     <button class="round_button" onclick="toggleTheme()"><i id="ThemeIcon"
                             class="fa-regular fa-moon"></i></button>
                 </div>
-                <img src="/Blog/css/banner.jpg" alt="banner_pic">
-
-                <div class="UnderBanner">
-                    <div class="profile_pic">
-                        <img src="/Blog/css/profile.png" alt="profile_pic">
-                    </div>
-                    <div class="UnderBannerBTNs">
-                        <a href="EditProfile.php?UserID=<?= $LoggedUserID; ?>"><button class="oval_button"> <i class=""></i> Edit Profile </button></a>
-                        <button class="round_button"> <i class="fa-solid fa-magnifying-glass"></i></button>
-                        <button class="round_button"> <i class="fa-solid fa-ellipsis"></i></button>
-                    </div>
-                </div>
-
             </div>
-            <div class="User_info" style=" padding-top: 5px;">
-                <h3><?php echo $LoggedUserName; ?></h3>
-                <H4><?php echo $LoggedUserEmail; ?></H4>
-                <p>Joined Date <?= $LoggedCreate_date; ?></p>
-                <br>
-                <div style="display: flex; justify-items: center; gap: 10px; color: blue;">
-                    <p ><?=$FollowingCount ?> Following</p>
-                    <p ><?=$FollowerCount ?> Follower</p>
-                </div>
-                <br>
-            </div>
-
             <hr>
             <hr>
 
             <!-- نمایش پست ها -->
             <div class="post">
                 <?php
-                // require_once 'Articles.php';
                 require_once __DIR__ . '/../../Blog/Model/Articles.php';
-                // require_once 'Media.php';
                 require_once __DIR__ . '/../../Blog/Model/Media.php';
-                $articles = Articles::ShowAllUserArticles($LoggedUserID);
+                $articles = Articles::ShowAllArticles();
                 $LoggedUserInfo = Users::FetchUserInfoBYID($LoggedUserID);
 
+                
                 ?>
                 <div id="articles-container">
                     <?php if (!empty($articles)): ?>
@@ -143,7 +126,6 @@ $FollowerCount = FollowService::FollowerCount($LoggedUserID) ;
 
                             <a href="singlepost.php?articleID=<?= $article['ArticleID'] ?>"
                                 style="text-decoration: none; color: inherit;">
-
                                 <?php
                                 $Autherinfo= Users::FetchUserInfoBYID($article['AutherID']);
                                 ?>

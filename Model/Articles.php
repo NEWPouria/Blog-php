@@ -49,6 +49,22 @@ class Articles
         $Data->myclose();
     }
 
+    public static function ShowAllArticles()
+    {
+        $Data = new DataBase();
+        $ShowAllArticlesSqlCode = "SELECT * FROM Article ORDER BY ArticleDate DESC;";
+        $WillPrepareUserArticles = $Data->myprepare($ShowAllArticlesSqlCode);
+        $WillPrepareUserArticles->execute();
+        $sqlResult = $WillPrepareUserArticles->get_result();
+
+        $articles = [];
+        while ($row = $sqlResult->fetch_assoc()) {
+            $articles[] = $row;
+        }
+        return $articles;
+        $Data->myclose();
+    }
+
     public static function GetArticleInfoById($ArticleID)
     {
         $Data = new DataBase();
